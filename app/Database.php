@@ -30,10 +30,23 @@ class Database{
 
     // recuperer les résultats
 
-    public function query($statement){
+    public function query($statement, $class_name){
         $req = $this->getPDO()->query($statement);
-        $data = $req->fetchAll(PDO::FETCH_OBJ);
+        $data = $req->fetchAll(PDO::FETCH_CLASS, $class_name);
 
+        return $data;
+    }
+
+    public function prepare($statement, $attributes, $class_name, $one = false){
+        $req = $this->getPDO()->prepare($statement);
+        $req->execute($attributes);
+        $req->setFetchMode(PDO::FETCH_CLASS, $class_name);
+            if($one){
+                $data = $req->fetch();
+            }else{
+                
+                $data = $req->fetchAll();
+            }
         return $data;
     }
 }

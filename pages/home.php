@@ -1,5 +1,6 @@
-<?php
-namespace App;
-$db = new Database('website');
-$data = $db->query('SELECT * FROM articles');
-var_dump($data);
+<ul>
+    <?php foreach($db->query('SELECT * FROM articles', 'App\Table\Article') as $post): ?>
+        <h2><a href="<?= $post->url ?>"><?= $post->titre ?></a></h2>
+            <p><?=  $post->extrait ?></p>
+    <?php endforeach; ?>
+</ul>
