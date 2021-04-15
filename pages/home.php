@@ -1,2 +1,5 @@
-<h1>Je suis home</h1>
-<a href="index.php?p=single">Single</a>
+<?php
+namespace App;
+$db = new Database('website');
+$data = $db->query('SELECT * FROM articles');
+var_dump($data);
