@@ -6,6 +6,13 @@ class Table{
 
     protected static $table;
 
+    public function __get($key)
+    {
+        $method = 'get' . ucfirst($key);
+        $this->$key = $this->$method();
+        return $this->$key;
+    }
+
     private static function getTable(){
         if(static::$table === null){
             $class_name = explode('\\' ,get_called_class());
@@ -24,7 +31,7 @@ class Table{
 
     public static function query($statement, $attributes = null, $one=false){
         if($attributes){
-            return App::getDB()->prepare($statement, $attributes, get_called_class(), $one);
+            return App::getDB()->prepare($statement, $attributes ,get_called_class(), $one);
         }else{
             return App::getDB()->query($statement, get_called_class(), $one);
         }
@@ -37,10 +44,4 @@ class Table{
         ",get_called_class());
     }
 
-    public function __get($key)
-    {
-        $method = 'get' . ucfirst($key);
-        $this->$key = $this->$method();
-        return $this->$key;
-    }
 }

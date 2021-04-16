@@ -19,4 +19,9 @@ class App{
         
         return self::$database;
     }
+
+    public static function notFound(){  
+        header("HTTP/1.0 404 NOT FOUND");
+        header('Location:index.php?p=404');
+    }
 }

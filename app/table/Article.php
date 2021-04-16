@@ -19,7 +19,7 @@ class Article extends Table{
         LEFT JOIN categories 
             on category_id = categories.id
         WHERE category_id = ?
-        ", [$category_id] ,true);
+        ", [$category_id]);
     }
 
     public function getUrl(){
