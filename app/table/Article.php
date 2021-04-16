@@ -1,13 +1,25 @@
 <?php
 namespace App\Table;
+use \App\App;
 
-class Article{
+class Article extends Table{
 
-    public function __get($key)
-    {
-        $method = 'get' . ucfirst($key);
-        $this->$key = $this->$method();
-        return $this->$key;
+    public static function getLast(){
+        return self::query("
+        SELECT articles.id, articles.titre, articles.contenu, categories.titre as category 
+        FROM articles 
+        LEFT JOIN categories 
+            on category_id = categories.id");
+    }
+
+    public static function lastByCategory($category_id){
+        return self::query("
+        SELECT articles.id, articles.titre, articles.contenu, categories.titre as category 
+        FROM articles 
+        LEFT JOIN categories 
+            on category_id = categories.id
+        WHERE category_id = ?
+        ", [$category_id] ,true);
     }
 
     public function getUrl(){

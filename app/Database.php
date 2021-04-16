@@ -25,14 +25,21 @@ class Database{
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->pdo = $pdo;
         }
-        return $pdo;
+        return $this->pdo;
     }
 
     // recuperer les résultats
 
-    public function query($statement, $class_name){
+    public function query($statement, $class_name, $one = false){
         $req = $this->getPDO()->query($statement);
-        $data = $req->fetchAll(PDO::FETCH_CLASS, $class_name);
+        $data = $req->fetchAll(PDO::FETCH_CLASS, $class_name);  
+        $data = $req->setFetchMode(PDO::FETCH_CLASS, $class_name);
+        if($one){
+            $data = $req->fetch();
+        }else{
+            
+            $data = $req->fetchAll();
+        }
 
         return $data;
     }
@@ -40,7 +47,7 @@ class Database{
     public function prepare($statement, $attributes, $class_name, $one = false){
         $req = $this->getPDO()->prepare($statement);
         $req->execute($attributes);
-        $req->setFetchMode(PDO::FETCH_CLASS, $class_name);
+        $data = $req->setFetchMode(PDO::FETCH_CLASS, $class_name);
             if($one){
                 $data = $req->fetch();
             }else{
